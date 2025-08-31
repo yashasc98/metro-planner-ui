@@ -21,7 +21,7 @@ import { FaTrain } from "react-icons/fa";
 import StationsMap from "../../components/StationsMap";
 
 export default function RoutePage() {
-    const { city } = useParams(); // since route is now /:city/route
+    const { city } = useParams();
     const [stations, setStations] = useState([]);
     const [route, setRoute] = useState([]);
     const [from, setFrom] = useState("");
@@ -68,9 +68,9 @@ export default function RoutePage() {
             setLoading(true);
             setError(null);
             const res = await axios.get(
-                `https://metro-planner.onrender.com/stations`
+                `https://metro-planner.onrender.com/route/${from}/${to}`
             );
-            setRoute(res.data || []);
+            setRoute(res.data?.path || []);
         } catch (err) {
             setError(
                 err.response?.data?.message || err.message || "Failed to load route."

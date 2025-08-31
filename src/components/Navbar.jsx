@@ -1,6 +1,7 @@
-import { Box, Flex, Heading, IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { FiMap, FiSun, FiMoon } from "react-icons/fi";
+import { Box, Flex, Heading, IconButton, useColorMode, useColorModeValue, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { FiMap, FiSun, FiMoon, FiChevronDown } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -11,7 +12,7 @@ export default function Navbar() {
   const iconColor = useColorModeValue("white", "whiteAlpha.900");
 
   return (
-    <Box bg={bg} px={6} py={4} shadow="md">
+    <Box bg={bg} px={6} py={4} shadow="md" zIndex="1000" position="relative">
       <Flex align="center" justify="space-between">
         <Flex align="center">
           <IconButton
@@ -23,9 +24,35 @@ export default function Navbar() {
             mr={3}
             onClick={() => navigate("/")}
           />
-          <Heading size="md" color={textColor}>
+          <Heading size="md" color={textColor} mr={6}>
             Metro Planner
           </Heading>
+
+          <Menu>
+            <MenuButton as={Button} rightIcon={<FiChevronDown />} colorScheme="blue">
+              Cities
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <Flex direction="column">
+                  <Button
+                    variant="ghost"
+                    justifyContent="flex-start"
+                    onClick={() => navigate("/bangalore/stations")}
+                  >
+                    Bangalore - Stations
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    justifyContent="flex-start"
+                    onClick={() => navigate("/bangalore/route")}
+                  >
+                    Bangalore - Route
+                  </Button>
+                </Flex>
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </Flex>
 
         <IconButton
