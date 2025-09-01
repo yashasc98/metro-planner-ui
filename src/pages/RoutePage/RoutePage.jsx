@@ -88,7 +88,7 @@ export default function RoutePage() {
                 fontSize={{ base: "2xl", md: "3xl" }}
                 color={textColor}
             >
-                Route Planner – {city}
+                Route Planner - {city}
             </Heading>
 
             {/* Station selectors */}
