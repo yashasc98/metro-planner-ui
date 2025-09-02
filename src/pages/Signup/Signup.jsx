@@ -8,13 +8,8 @@ import {
   Heading,
   VStack,
 } from "@chakra-ui/react";
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, incrementByAmount } from "../../redux/features/counterSlice";
 
 function Signup() {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -44,12 +39,6 @@ function Signup() {
       boxShadow="lg"
       bg="white"
     >
-      <div style={{ padding: '2rem' }}>
-        <h1>Redux Counter: {count}</h1>
-        <button onClick={() => dispatch(increment())}>+1</button>
-        <button onClick={() => dispatch(decrement())}>-1</button>
-        <button onClick={() => dispatch(incrementByAmount(5))}>+5</button>
-      </div>
       <Heading as="h2" size="lg" textAlign="center" mb={6}>
         Sign Up
       </Heading>
