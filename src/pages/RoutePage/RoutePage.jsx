@@ -13,11 +13,15 @@ import {
     Circle,
     Badge,
     useColorModeValue,
-    Select,
     Button,
     Flex,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuGroup,
 } from "@chakra-ui/react";
-import { FaTrain } from "react-icons/fa";
+import { FaTrain, FaChevronDown, FaCheck } from "react-icons/fa";
 import StationsMap from "../../components/StationsMap";
 
 export default function RoutePage() {
@@ -28,6 +32,12 @@ export default function RoutePage() {
     const [to, setTo] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const groupedStations = stations.reduce((acc, s) => {
+        if (!acc[s.line]) acc[s.line] = [];
+        acc[s.line].push(s);
+        return acc;
+    }, {});
 
     const lineColors = {
         purple: { light: "purple.100", dark: "purple.700" },
@@ -103,31 +113,77 @@ export default function RoutePage() {
                 borderRadius="md"
                 shadow="sm"
             >
-                <Select
-                    placeholder="Select FROM"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
-                    w="200px"
-                >
-                    {stations.map((s) => (
-                        <option key={s.id} value={s.code}>
-                            {s.name}
-                        </option>
-                    ))}
-                </Select>
+                {/* FROM selector */}
+                <Menu>
+                    <MenuButton as={Button} rightIcon={<FaChevronDown />} w="220px">
+                        {from ? stations.find((s) => s.code === from)?.name : "Select FROM"}
+                    </MenuButton>
+                    <MenuList maxH="400px" overflowY="auto" zIndex="popover">
+                        {Object.entries(groupedStations).map(([line, lineStations]) => (
+                            <MenuGroup key={line} title={`${line.toUpperCase()} Line`}>
+                                {lineStations.map((s) => {
+                                    const isSelected = from === s.code;
+                                    const bg = useColorModeValue(
+                                        lineColors[s.line]?.light || "gray.100",
+                                        lineColors[s.line]?.dark || "gray.700"
+                                    );
+                                    return (
+                                        <MenuItem
+                                            key={s.id}
+                                            onClick={() => setFrom(s.code)}
+                                            bg={isSelected ? "blue.100" : bg}
+                                            _hover={{ bg: "blue.200" }}
+                                        >
+                                            <HStack justify="space-between" w="100%">
+                                                <HStack>
+                                                    <Text>{s.name}</Text>
+                                                    <Badge colorScheme={s.line || "gray"}>{s.line}</Badge>
+                                                </HStack>
+                                                {isSelected && <FaCheck color="blue.500" />}
+                                            </HStack>
+                                        </MenuItem>
+                                    );
+                                })}
+                            </MenuGroup>
+                        ))}
+                    </MenuList>
+                </Menu>
 
-                <Select
-                    placeholder="Select TO"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                    w="200px"
-                >
-                    {stations.map((s) => (
-                        <option key={s.id} value={s.code}>
-                            {s.name}
-                        </option>
-                    ))}
-                </Select>
+                {/* TO selector */}
+                <Menu>
+                    <MenuButton as={Button} rightIcon={<FaChevronDown />} w="220px">
+                        {to ? stations.find((s) => s.code === to)?.name : "Select TO"}
+                    </MenuButton>
+                    <MenuList maxH="400px" overflowY="auto" zIndex="popover">
+                        {Object.entries(groupedStations).map(([line, lineStations]) => (
+                            <MenuGroup key={line} title={`${line.toUpperCase()} Line`}>
+                                {lineStations.map((s) => {
+                                    const isSelected = to === s.code;
+                                    const bg = useColorModeValue(
+                                        lineColors[s.line]?.light || "gray.100",
+                                        lineColors[s.line]?.dark || "gray.700"
+                                    );
+                                    return (
+                                        <MenuItem
+                                            key={s.id}
+                                            onClick={() => setTo(s.code)}
+                                            bg={isSelected ? "blue.100" : bg}
+                                            _hover={{ bg: "blue.200" }}
+                                        >
+                                            <HStack justify="space-between" w="100%">
+                                                <HStack>
+                                                    <Text>{s.name}</Text>
+                                                    <Badge colorScheme={s.line || "gray"}>{s.line}</Badge>
+                                                </HStack>
+                                                {isSelected && <FaCheck color="blue.500" />}
+                                            </HStack>
+                                        </MenuItem>
+                                    );
+                                })}
+                            </MenuGroup>
+                        ))}
+                    </MenuList>
+                </Menu>
 
                 <Button
                     colorScheme="blue"

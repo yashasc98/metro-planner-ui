@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchStations } from "../../redux/features/stationsSlice";
 import axios from "axios";
 import {
     Box,
@@ -23,9 +25,8 @@ import StationsMap from "../../components/StationsMap";
 
 export default function Stations() {
     const { city } = useParams();
-    const [stations, setStations] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+    const { items: stations, loading, error } = useSelector((state) => state.stations);
     const [searchTerm, setSearchTerm] = useState("");
 
     const lineColors = {
@@ -43,27 +44,10 @@ export default function Stations() {
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
     useEffect(() => {
-        const fetchStations = async () => {
-            try {
-                setLoading(true);
-                const res = await axios.get(
-                    "https://metro-planner.onrender.com/stations"
-                );
-                const filtered = res.data.filter(
-                    (station) => station.city?.toLowerCase() === city?.toLowerCase()
-                );
-                setStations(filtered);
-            } catch (err) {
-                setError(
-                    err.response?.data?.message || err.message || "Failed to load stations."
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchStations();
-    }, [city]);
+        if (city) {
+            dispatch(fetchStations(city));
+        }
+    }, [city, dispatch]);
 
     // Filter stations based on search term
     const filteredStations = useMemo(() => {
