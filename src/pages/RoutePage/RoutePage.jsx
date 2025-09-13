@@ -23,8 +23,10 @@ import {
 } from "@chakra-ui/react";
 import { FaTrain, FaChevronDown, FaCheck } from "react-icons/fa";
 import StationsMap from "../../components/StationsMap";
+import { gradients } from "../../themeUtils";
 
 export default function RoutePage() {
+    // Ensure all hooks are called in the same order
     const { city } = useParams();
     const [stations, setStations] = useState([]);
     const [route, setRoute] = useState([]);
@@ -49,7 +51,7 @@ export default function RoutePage() {
         orange: { light: "orange.100", dark: "orange.600" },
     };
 
-    const pageBg = useColorModeValue("gray.50", "gray.900");
+    const gradientBg = useColorModeValue(gradients.light, gradients.dark);
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
     // Load all stations for dropdowns
@@ -71,7 +73,7 @@ export default function RoutePage() {
         fetchStations();
     }, []);
 
-    // Fetch route only when FROM + TO selected
+    // Ensure fetchRoute is a stable function
     const fetchRoute = async () => {
         if (!from || !to) return;
         try {
@@ -91,7 +93,7 @@ export default function RoutePage() {
     };
 
     return (
-        <Box p={{ base: 4, md: 8 }} bg={pageBg} minH="100vh">
+        <Box p={{ base: 4, md: 8 }} minH="100vh">
             <Heading
                 mb={6}
                 textAlign="center"
@@ -108,7 +110,7 @@ export default function RoutePage() {
                 wrap="wrap"
                 mb={8}
                 align="center"
-                bg={useColorModeValue("white", "gray.800")}
+                bg={gradientBg}
                 p={4}
                 borderRadius="md"
                 shadow="sm"

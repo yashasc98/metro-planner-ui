@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { FiMap, FiSun, FiMoon, FiChevronDown, FiChevronLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { gradients } from "../themeUtils";
 
 const cities = [
   {
@@ -36,7 +37,8 @@ const cities = [
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
-  const bg = useColorModeValue("blue.500", "gray.800");
+  const bg = useColorModeValue(gradients.light, gradients.dark);
+  const buttonColor = useColorModeValue("purple.300", "blue.500");
   const textColor = useColorModeValue("white", "whiteAlpha.900");
   const iconColor = useColorModeValue("white", "whiteAlpha.900");
 
@@ -94,7 +96,7 @@ export default function Navbar() {
               <Button
                 onClick={isOpen ? onClose : onOpen}   // toggle manually
                 rightIcon={<FiChevronDown />}
-                colorScheme="blue"
+                bg={buttonColor}
               >
                 {selectedCity?.name ?? "Select city"}
               </Button>

@@ -5,11 +5,23 @@ import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 import { Provider } from 'react-redux';
 import { store } from "./redux/store.js";
 import "./index.css";
+import { gradients } from "./themeUtils";
 
 const theme = extendTheme({
   config: {
-    initialColorMode: "system",
+    initialColorMode: "dark",
     useSystemColorMode: true,
+  },
+  styles: {
+    global: (props) => ({
+      body: {
+        backgroundImage:
+          props.colorMode === "dark" ? gradients.dark : gradients.light,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        minHeight: "100vh",
+      },
+    }),
   },
 });
 

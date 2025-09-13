@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchStations } from "../../redux/features/stationsSlice";
-import axios from "axios";
 import {
     Box,
     Heading,
@@ -39,7 +38,6 @@ export default function Stations() {
         orange: { light: "orange.100", dark: "orange.600" },
     };
 
-    const pageBg = useColorModeValue("gray.50", "gray.900");
     const inputBg = useColorModeValue("white", "gray.700");
     const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
@@ -74,7 +72,7 @@ export default function Stations() {
     }
 
     return (
-        <Box p={{ base: 4, md: 8 }} bg={pageBg} minH="100vh">
+        <Box p={{ base: 4, md: 8 }} minH="100vh">
             <Heading
                 mb={6}
                 textTransform="capitalize"
